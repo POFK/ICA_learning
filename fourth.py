@@ -34,7 +34,7 @@ def Get_Result(filename1,filename2,N=4,withbeam=True,powerspectrum=False,noise=F
 #####################################################
     if noise==True:
         print map[0]
-	map=map+10*np.random.normal(loc=1,scale=2,size=map.shape)
+	map=map+2*np.random.uniform(size=map.shape)
         print '#'*80
         print map[0]
     ############FastICA#######################
@@ -67,7 +67,7 @@ def Get_Result(filename1,filename2,N=4,withbeam=True,powerspectrum=False,noise=F
 #   plt.plot(resx,res,label='freq_%d pixel_%d'%(F,P))
 #   plt.show()
     def GetPs(freq):
-	name='21cm_Syn_35beam_noise'
+	name='21cm_fg_35beam_noise_gauss'
 #       plt.close('all')
         re=tt.ICA.rebuild(N,A_,S_,freq,Plot)
         rebuild_21cm=map[freq,:]-re
@@ -81,7 +81,7 @@ def Get_Result(filename1,filename2,N=4,withbeam=True,powerspectrum=False,noise=F
         plt.xlabel('$l$')
         plt.ylabel('$l(l+1)C_l$')
 	plt.title(name)
-	plt.legend()
+	plt.legend(loc='lower right')
    	plt.savefig('./result/APS/'+name+'.eps')
     if powerspectrum==True:
         GetPs(0)    
@@ -95,6 +95,7 @@ def add_sim_21cm_in_freq():
 #a3=Get_Result('../data/ICA_sim/21cm_freq300_128.hdf5','../data/ICA_sim/data_with_beam/D4021cm_fg_freq300_128.hdf5',withbeam=True,powerspectrum=False)
 #b=Get_Result('../data/ICA_sim/21cm_freq200_128.hdf5','../data/ICA_sim/fg_freq200_128.hdf5',withbeam=True,powerspectrum=True,noise=True)
 b2=Get_Result('../data/ICA_sim/21cm_freq200_128.hdf5','../data/ICA_sim/data_with_beam/_35arcmin_21cm_fg_freq200_128.hdf5',withbeam=True,powerspectrum=True,noise=True)
+#b2=Get_Result('../data/ICA_sim/_35arcmin_21cm_freq100_128.hdf5','../data/ICA_sim/data_with_beam/_35arcmin_21cm_fg_freq200_128.hdf5',withbeam=True,powerspectrum=True,noise=True)
 #b3=Get_Result('../data/ICA_sim/21cm_freq200_128.hdf5','../data/ICA_sim/data_with_beam/D4021cm_fg_freq200_128.hdf5',withbeam=True,powerspectrum=False)
 ####################################################################################
 #plt.figure('200_128',figsize=(18,10))

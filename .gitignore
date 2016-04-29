@@ -1,0 +1,5 @@
+*.eps
+*.png
+*.pyc
+*.npy
+*.hdf5

@@ -48,7 +48,7 @@ class ICA():
     def GetComponent(self, N):
         plt.clf()
         for i in range(N):
-            hp.mollview(S_[:, i], title='component $%d$' % (i + 1))
+            hp.mollview(np.log10(S_[:, i]+1),unit='$log(K+1)$', title='component $%d$' % (i + 1))
             plt.savefig('N_%d_result%i.eps' % (N, i))
             plt.cla()
 
@@ -60,28 +60,28 @@ class ICA():
         i = freq
         s = ICA.rebuild(N=N, A_=A_, S_=S_, freq_num=i)
 
-        hp.mollview(a[i, pol] + b[i], title='simulation_all_freq%d' % i)
+        hp.mollview(a[i] + b[i], title='simulation_all_freq%d' % i)
         plt.savefig('N_%d_simulation_freq%d.eps' % (N, i))
         plt.cla()
 
-        result_21cm = a[i, pol] + b[i] - s
+        result_21cm = a[i] + b[i] - s
         result_21cm = result_21cm - result_21cm.mean()
 
         def PlotResult():
-            hp.mollview(result_21cm, title='rebuild_21cm_freq%d' % i)
+            hp.mollview(np.log10(result_21cm+1),unit='$log(K+1)$', title='rebuild 21cm signal' )
             plt.savefig('N_%d_rebuild_21cm_%d.eps' % (N, i))
             plt.cla()
             # plot rebuilt 21cm map, which has subtract its average value
             hp.mollview(
                 (map1[
-                    i,
-                    pol] -
+                    i
+                    ] -
                     result_21cm),
                 title='residuals_21cm_freq%d' %
                 i)
             plt.savefig('N_%d_residuals_21cm%d.eps' % (N, i))
 
-            hp.mollview(map1[i, pol], title='sim_21cm_freq%d' % i)
+            hp.mollview(map1[i ], title='sim_21cm_freq%d' % i)
             plt.savefig('N_%d_sim_21cm_%d.eps' % (N, i))
             plt.cla()
             hp.mollview(map3[i ], title='sim_galactic_syn%d' % i)
@@ -89,12 +89,12 @@ class ICA():
             plt.clf()
 
         PlotResult()
-        print ICA.Residuals(map1[i, pol], result_21cm)
-        return ICA.Residuals(map1[i, pol], result_21cm)
+        print ICA.Residuals(map1[i], result_21cm)
+        return ICA.Residuals(map1[i], result_21cm)
 
 #########################read file##################################
 
-map1 = ICA.ReadMap(filename='/home/mtx/data/ICA_sim/21cm_freq200_128.hdf5')
+map1 = ICA.ReadMap(filename='/home/mtx/data/ICA_sim/data_with_beam/21cm_freq200_128.hdf5')
 map3 = ICA.ReadMap(filename='/home/mtx/data/ICA_sim/data_with_beam/_35arcmin_21cm_fg_freq200_128.hdf5')
 Freq_num = map1.shape[0]
 ##########################load data##################################
@@ -116,12 +116,12 @@ call('rm *.eps', shell=True)
 
 def get_simpic(N):
     for i in range(N):
-        hp.mollview(map1[i, pol])
+        hp.mollview(map1[i ])
         plt.title('$signal-21cm-%i$' % i)
         plt.savefig('N_%d_signal_21cm_%i.eps' % (N, i))
         plt.cla()
     for j in range(N):
-        hp.mollview(map3[j, pol])
+        hp.mollview(map3[j])
         plt.title('$signal-galaxy-%i$' % j)
         plt.savefig('N_%d_signal_galaxy_%i.eps' % (N, j))
         plt.cla()
@@ -131,6 +131,6 @@ plt.close('all')
 ICA.GetComponent(N=N)
 ICA.RESULT(0,N, pol, A_, S_, map1, map3)
 
-#call('./write_tex.pyc', shell=True)
+call('./write_tex.pyc', shell=True)
 #call('cp result.pdf 0.000001.pdf', shell=True)
 #call('cp result.pdf result_component_%d.pdf'%N,shell=True)
