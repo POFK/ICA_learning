@@ -29,14 +29,15 @@ data_C=data_C[:,ra_1:ra_2,dec_1:dec_2]
 data_D=data_D[:,ra_1:ra_2,dec_1:dec_2]
 data_wig=data_wig[:,ra_1:ra_2,dec_1:dec_2]
 
-map_clean_A=ica.Clean(data_A,label='a',freq=80,sigma=1,PLOT=0)
+map_clean_A=ica.Clean(data_A,label='a',freq=80,sigma=1,PLOT=1,ra=ra,dec=dec)
 #plt.savefig('gbt_a_N100_weight.eps')
-map_clean_B=ica.Clean(data_B,label='b',freq=80,sigma=3,PLOT=0)
+map_clean_B=ica.Clean(data_A,label='b',freq=80,sigma=3,PLOT=1,ra=ra,dec=dec)
 #plt.savefig('gbt_b_N100_weight.eps')
-map_clean_C=ica.Clean(data_C,label='c',freq=80,sigma=5,PLOT=0)
+map_clean_C=ica.Clean(data_A,label='c',freq=80,sigma=5,PLOT=1,ra=ra,dec=dec)
 #plt.savefig('gbt_c_N100_weight.eps')
-map_clean_D=ica.Clean(data_D,label='d',freq=80,sigma=7,PLOT=0)
+map_clean_D=ica.Clean(data_A,label='d',freq=80,sigma=7,PLOT=1,ra=ra,dec=dec)
 #plt.savefig('gbt_d_N100_weight.eps')
+plt.show()
 plt.close('all')
 
 #plt.show()
@@ -45,40 +46,40 @@ plt.close('all')
 #np.save('/project/mtx/output/ICA_GBT/SecB_cleaned_'+str(N)+'.npy',map_clean_B)
 #np.save('/project/mtx/output/ICA_GBT/SecC_cleaned_'+str(N)+'.npy',map_clean_C)
 #np.save('/project/mtx/output/ICA_GBT/SecD_cleaned_'+str(N)+'.npy',map_clean_D)
-#################################################################################
-#ica.Grid(32,32,128)
-k_0,p1_0,p2_0,p_cro_0=ica.Pk(map_clean_A,data_wig,bin=bins)
-k,p1,p2,p_cro=ica.Pk(map_clean_B,data_wig,bin=bins)
-k_0+=k
-p_cro_0+=p_cro
-k,p1,p2,p_cro=ica.Pk(map_clean_C,data_wig,bin=bins)
-k_0+=k
-p_cro_0+=p_cro
-k,p1,p2,p_cro=ica.Pk(map_clean_D,data_wig,bin=bins)
-k_0+=k
-p_cro_0+=p_cro
-
-std=np.load('std.npy')
-plt.plot(k,p1,'.-.',label='auto_D')
-plt.plot(k,p2,'.-.',label='wig')
-#plt.errorbar(k,np.abs(p_cro)*k**3/(2*np.pi**2),yerr=std,fmt='.-',label='cro')
-plt.plot(k,np.abs(p_cro_0)/4.,'o--',label='cro')
-
-k,p1,p2,p_cro=ica.Pk(map_clean_D,map_clean_A,bin=bins)
-plt.plot(k,p_cro,'.-.',label='cro_AD')
-
-print p_cro_0/4
-print std
-a=np.loadtxt('explanatory00_z3_pk.dat')
-a=a[a.shape[0]/3.:,:]
-k=a[:,0]
-pk=a[:,1]
-pk=pk*0.43*0.29*((0.308+(1+0.7)**-3*0.692)/0.37)**-0.5*((1+0.7)/1.8)**0.5*1.48
-plt.plot(k,pk*k**3/(2*np.pi**2),label='delta')
-plt.yscale('log')
-plt.xscale('log')
-plt.legend(loc='upper left')
-plt.show()
-#plt.savefig('ps3_weight.eps')
-
-
+##################################################################################
+##ica.Grid(32,32,128)
+#k_0,p1_0,p2_0,p_cro_0=ica.Pk(map_clean_A,data_wig,bin=bins)
+#k,p1,p2,p_cro=ica.Pk(map_clean_B,data_wig,bin=bins)
+#k_0+=k
+#p_cro_0+=p_cro
+#k,p1,p2,p_cro=ica.Pk(map_clean_C,data_wig,bin=bins)
+#k_0+=k
+#p_cro_0+=p_cro
+#k,p1,p2,p_cro=ica.Pk(map_clean_D,data_wig,bin=bins)
+#k_0+=k
+#p_cro_0+=p_cro
+#
+#std=np.load('std.npy')
+#plt.plot(k,p1,'.-.',label='auto_D')
+#plt.plot(k,p2,'.-.',label='wig')
+##plt.errorbar(k,np.abs(p_cro)*k**3/(2*np.pi**2),yerr=std,fmt='.-',label='cro')
+#plt.plot(k,np.abs(p_cro_0)/4.,'o--',label='cro')
+#
+#k,p1,p2,p_cro=ica.Pk(map_clean_D,map_clean_A,bin=bins)
+#plt.plot(k,p_cro,'.-.',label='cro_AD')
+#
+#print p_cro_0/4
+#print std
+#a=np.loadtxt('explanatory00_z3_pk.dat')
+#a=a[a.shape[0]/3.:,:]
+#k=a[:,0]
+#pk=a[:,1]
+#pk=pk*0.43*0.29*((0.308+(1+0.7)**-3*0.692)/0.37)**-0.5*((1+0.7)/1.8)**0.5*1.48
+#plt.plot(k,pk*k**3/(2*np.pi**2),label='delta')
+#plt.yscale('log')
+#plt.xscale('log')
+#plt.legend(loc='upper left')
+#plt.show()
+##plt.savefig('ps3_weight.eps')
+#
+#

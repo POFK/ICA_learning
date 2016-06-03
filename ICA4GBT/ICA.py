@@ -20,7 +20,7 @@ class ICA_GBT():
         self.data_wigglez=np.load(PathWig)
         self.data=np.load(PathData)
         return self.data
-    def Clean(self,data,label='test',freq=20,sigma=1,PLOT=True):
+    def Clean(self,data,label='test',freq=20,sigma=1,PLOT=True,ra=None,dec=None):
         shape=(data.shape[1],data.shape[2])
         S=data.reshape((data.shape[0],-1)).T   #model 2
         ica = FastICA(n_components=self.N)
@@ -30,34 +30,41 @@ class ICA_GBT():
         data_clean=(S-ICs_sum).T.reshape(data.shape)
         limy,limx=data[freq].shape
         if PLOT== True:
+            Ra,Dec=np.meshgrid(dec,ra)
+            print Ra.shape
+            print Dec.shape
+            print data[freq].shape
             plt.figure(label)
             plt.subplot(1,3,1)
 #           plt.imshow(data[freq],extent=[self.dec[0],self.dec[-1],self.ra[0],self.ra[-1]])
-            plt.pcolor(data[freq])
+            plt.pcolormesh(Ra,Dec,data[freq])
             plt.colorbar()
             plt.title('map')
-            plt.xlim([0,limx])
-            plt.ylim([0,limy])
+            plt.xlim([dec.min(),dec.max()])
+            plt.ylim([ra.min(),ra.max()])
             plt.xlabel('dec')
             plt.ylabel('ra')
+            plt.gca().invert_yaxis()
             plt.subplot(1,3,2)
 #           plt.imshow((ICs_sum).T.reshape(data.shape)[freq],extent=[self.dec[0],self.dec[-1],self.ra[0],self.ra[-1]])
-            plt.pcolor((ICs_sum).T.reshape(data.shape)[freq])
+            plt.pcolormesh(Ra,Dec,((ICs_sum).T.reshape(data.shape)[freq]))
             plt.colorbar()
             plt.title('ICs')
-            plt.xlim([0,limx])
-            plt.ylim([0,limy])
+            plt.xlim([dec.min(),dec.max()])
+            plt.ylim([ra.min(),ra.max()])
             plt.xlabel('dec')
             plt.ylabel('ra')
+            plt.gca().invert_yaxis()
             plt.subplot(1,3,3)
             mean_=data_clean[freq].mean()
             std_=data_clean[freq].std()
 #           plt.imshow(data_clean[freq],vmin=mean_-std_*sigma,vmax=mean_+std_*sigma,extent=[self.dec[0],self.dec[-1],self.ra[0],self.ra[-1]])
-            plt.pcolor(data_clean[freq]-mean_,vmin=-std_*sigma,vmax=std_*sigma)
+            plt.pcolormesh(Ra,Dec,(data_clean[freq]-mean_),vmin=-std_*sigma,vmax=std_*sigma)
             plt.colorbar()
             plt.title('cleaned map')
-            plt.xlim([0,limx])
-            plt.ylim([0,limy])
+            plt.xlim([dec.min(),dec.max()])
+            plt.ylim([ra.min(),ra.max()])
+            plt.gca().invert_yaxis()
             plt.xlabel('dec')
             plt.ylabel('ra')
         return data_clean
@@ -96,6 +103,7 @@ class ICA_GBT():
         Ny=self.Ny
         Nz=self.Nz
         nn=np.histogramdd(DPM,bins=(bin_x,bin_y,bin_z))[0]
+        Vw=len(nn[nn!=0])
         T1,edges=np.histogramdd(DPM,bins=(bin_x,bin_y,bin_z),weights=data1.reshape(-1))
         T2=np.histogramdd(DPM,bins=(bin_x,bin_y,bin_z),weights=data2.reshape(-1))[0]
         Hx=edges[0][1]-edges[0][0]
@@ -154,6 +162,12 @@ class ICA_GBT():
         Pk_1*=k_mag**3/(2*np.pi**2)    # delta(k)^2
         Pk_2*=k_mag**3/(2*np.pi**2)    # delta(k)^2
         
+        #========
+#       Pk_cro/=Vw
+#       Pk_1/=Vw
+#       Pk_2/=Vw
+        print 'Vw',Vw
+        #========
         #################################################################################
 #       edges=np.linspace(k_mag.min(),k_mag.max(),bin+1,endpoint=True)
 #       n=np.histogram(k_mag,edges)[0]
