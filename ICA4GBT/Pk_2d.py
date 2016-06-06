@@ -44,7 +44,6 @@ def f(data=data4,ra=ra,dec=dec,freq=freq,label='ICs_10'):
     print Pk.shape
     pk=np.histogram(k,edges,weights=Pk)[0]
     plt.semilogy(k_bin/n,pk/n,'.--',label=label)
-
 f(data=data,label='data')
 f(data=data1,label='ICs_2')
 f(data=data2,label='ICs_3')
@@ -54,4 +53,3 @@ f(data=data5,label='ICs_20')
 f(data=data6,label='ICs_50')
 plt.legend()
 plt.show()
-    

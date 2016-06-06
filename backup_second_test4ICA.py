@@ -34,9 +34,9 @@ class ICA():
         self.s = 0
         for i in np.arange(N):
             self.s = self.s + S_[:, i] * A_[freq_num, i]
-        hp.mollview(self.s,min=self.s.mean()-self.s.std(),max=self.s.mean()+self.s.std(), title='rebuild_freq_%d' % freq_num)
-        plt.savefig('N_%d_rebuid_freq_%d.eps' % (N, freq_num))
-        plt.cla()
+#       hp.mollview(self.s, title='rebuild_freq_%d' % freq_num)
+#       plt.savefig('N_%d_rebuid_freq_%d.eps' % (N, freq_num))
+#       plt.cla()
         return self.s
 
     @classmethod
@@ -48,9 +48,7 @@ class ICA():
     def GetComponent(self, N):
         plt.clf()
         for i in range(N):
-            mean=S_[:,i].mean()
-            std=S_[:,i].std()
-            hp.mollview(S_[:, i],min=mean-std,max=mean+std,title='component $%d$' % (i + 1))
+            hp.mollview(S_[:, i], title='component $%d$' % (i + 1))
             plt.savefig('N_%d_result%i.eps' % (N, i))
             plt.cla()
 
@@ -62,45 +60,35 @@ class ICA():
         i = freq
         s = ICA.rebuild(N=N, A_=A_, S_=S_, freq_num=i)
 
-        plt_data=a[i, pol] + b[i, pol]
-        plt_mean=plt_data.mean()
-        plt_std=plt_data.std()
-        hp.mollview(plt_data,min=plt_mean-plt_std,max=plt_mean+plt_std,title='simulation_all_freq%d' % i)
-        plt.savefig('N_%d_simulation_freq%d.eps' % (N, i))
-        plt.cla()
+#       hp.mollview(a[i, pol] + b[i, pol], title='simulation_all_freq%d' % i)
+#       plt.savefig('N_%d_simulation_freq%d.eps' % (N, i))
+#       plt.cla()
 
         result_21cm = a[i, pol] + b[i, pol] - s
         result_21cm = result_21cm - result_21cm.mean()
 
         def PlotResult():
-            plt_data=result_21cm
-            plt_mean=plt_data.mean()
-            plt_std=plt_data.std()
-            hp.mollview(plt_data,min=plt_mean-plt_std,max=plt_mean+plt_std, title='rebuild_21cm_freq%d' % i)
+            hp.mollview(result_21cm, title='rebuild_21cm_freq%d' % i)
             plt.savefig('N_%d_rebuild_21cm_%d.eps' % (N, i))
             plt.cla()
             # plot rebuilt 21cm map, which has subtract its average value
-            plt_data=map1[i,pol]-result_21cm
-            plt_mean=plt_data.mean()
-            plt_std=plt_data.std()
-            hp.mollview(plt_data,min=plt_mean-plt_std,max=plt_mean+plt_std, title='residuals_21cm_freq%d' %i)
+            hp.mollview(
+                (map1[
+                    i,
+                    pol] -
+                    result_21cm),
+                title='residuals_21cm_freq%d' %
+                i)
             plt.savefig('N_%d_residuals_21cm%d.eps' % (N, i))
 
-            plt_data=map1[i,pol]
-            plt_mean=plt_data.mean()
-            plt_std=plt_data.std()
-            hp.mollview(plt_data,min=plt_mean-plt_std,max=plt_mean+plt_std,title='sim_21cm_freq%d' % i)
+            hp.mollview(map1[i, pol], title='sim_21cm_freq%d' % i)
             plt.savefig('N_%d_sim_21cm_%d.eps' % (N, i))
             plt.cla()
-
-            plt_data=map3[i,pol]
-            plt_mean=plt_data.mean()
-            plt_std=plt_data.std()
-            hp.mollview(plt_data,min=plt_mean-plt_std,max=plt_mean+plt_std,title='sim_syn_%d' % i)
+            hp.mollview(map3[i, pol], title='sim_galactic_syn%d' % i)
             plt.savefig('N_%d_sim_syn_%d.eps' % (N, i))
             plt.clf()
 
-        PlotResult()
+#       PlotResult()
         print ICA.Residuals(map1[i, pol], result_21cm)
         return ICA.Residuals(map1[i, pol], result_21cm)
 
@@ -120,7 +108,7 @@ for i in range(Freq_num):
     S.append(map1[i, pol] + map3[i,pol])
 S = np.array(S).T
 ##########################ICA components#############################
-N = 4  # components number
+N = 6  # components number
 #####################################################################
 ica = FastICA(n_components=N)
 S_ = ica.fit_transform(S)
@@ -146,6 +134,6 @@ plt.close('all')
 ICA.GetComponent(N=N)
 ICA.RESULT(100,N, pol, A_, S_, map1, map3)
 
-#call('./write_tex.pyc', shell=True)
+call('./write_tex.pyc', shell=True)
 #call('cp result.pdf 0.000001.pdf', shell=True)
 #call('cp result.pdf result_component_%d.pdf'%N,shell=True)
