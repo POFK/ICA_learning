@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+# coding=utf-8
+#the parameter file of Foreground Subtraction
+#data Path
+Path1=/home/ycli/data/gbt/gbt_15hr_41-80_pointcorr/secA_15hr_41-80_pointcorr_clean_map_I_800.npy
+Path2=/home/ycli/data/gbt/gbt_15hr_41-80_pointcorr/secA_15hr_41-80_pointcorr_clean_map_I_800.npy
+
+#gridding
+Nx=128
+Ny=64
+Nz=32
+
+#Cosomology parameter
+h=67.77
+Om0=0.307
+
+#1D Pk bins number
+bins=20
+
+#ICA
+#the number of ICs
+ICn= 20  
+
+#PCA
+#the number of modes will be removed
+PCn=   10
