@@ -1,0 +1,8 @@
+The GBT maps that we used in the paper are in:
+    /home/ycli/data/gbt/gbt_15hr_41-80_pointcorr/sec*_15hr_41-80_pointcorr_clean_map_I_800.npy
+
+
+nd the WiggleZ data are in 
+/home/ycli/data/wigglez/gbt_15hr_41-80_pointcorr/reg15data.npy
+/home/ycli/data/wigglez/gbt_15hr_41-80_pointcorr/reg15randXXX.npy
+noise_weight
