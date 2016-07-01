@@ -40,7 +40,7 @@ class getGridPk(IM):
         print 'ratio:',ratio
         print 'finish gridding'
         return T
-    def Pk(self,T1=None,T2=None):
+    def getPk(self,T1=None,T2=None):
         Hx=self.Hx
         Hy=self.Hy
         Hz=self.Hz

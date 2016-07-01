@@ -27,15 +27,16 @@ class PCA(IM):
         data_clean=map-Fg
         self.data_clean=data_clean.reshape(shape)
         self.Fg=Fg.reshape(shape)
+        print 'finish PCA ...'
         return self.data_clean
     def Plot(self):
         ra=self.ra
         dec=self.dec
         Ra,Dec=np.meshgrid(dec,ra)
-        plt.figure('All frequency map',figsize=(24,12))
+        plt.figure('All frequency map (PCA) ',figsize=(24,12))
         plt.suptitle('plot all frequency and PCn=%d'%self.PCn,x=0.06,y=0.98)
         plt.subplot(1,3,1)
-        plt.pcolormesh(Ra,Dec,self.data.sum(axis=0))
+        plt.pcolormesh(Ra,Dec,self.data.mean(axis=0))
         cbar=plt.colorbar()
 #       cbar.set_label('mK')
         plt.title('map')
@@ -46,7 +47,7 @@ class PCA(IM):
         plt.gca().invert_yaxis()
 
         plt.subplot(1,3,2)
-        plt.pcolormesh(Ra,Dec,self.Fg.sum(axis=0))
+        plt.pcolormesh(Ra,Dec,self.Fg.mean(axis=0))
         cbar=plt.colorbar()
 #       cbar.set_label('mK')
         plt.title('removed Fg')
@@ -56,7 +57,7 @@ class PCA(IM):
         plt.ylabel('ra')
         plt.gca().invert_yaxis()
 
-        clean_map_p=self.data_clean.sum(axis=0)
+        clean_map_p=self.data_clean.mean(axis=0)
         mean_=clean_map_p.mean()
         std_=clean_map_p.std()
         plt.subplot(1,3,3)

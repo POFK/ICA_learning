@@ -30,10 +30,10 @@ class ICA(IM):
         ra=self.ra
         dec=self.dec
         Ra,Dec=np.meshgrid(dec,ra)
-        plt.figure('All frequency map',figsize=(24,12))
+        plt.figure('All frequency map(ICA)',figsize=(24,12))
         plt.suptitle('plot all frequency and ICn=%d'%self.ICn,x=0.06,y=0.98)
         plt.subplot(1,3,1)
-        plt.pcolormesh(Ra,Dec,self.data.sum(axis=0))
+        plt.pcolormesh(Ra,Dec,self.data.mean(axis=0))
         cbar=plt.colorbar()
 #       cbar.set_label('mK')
         plt.title('map')
@@ -44,7 +44,7 @@ class ICA(IM):
         plt.gca().invert_yaxis()
 
         plt.subplot(1,3,2)
-        plt.pcolormesh(Ra,Dec,self.ICs_sum.sum(axis=0))
+        plt.pcolormesh(Ra,Dec,self.ICs_sum.mean(axis=0))
         cbar=plt.colorbar()
 #       cbar.set_label('mK')
         plt.title('ICs')
@@ -54,7 +54,7 @@ class ICA(IM):
         plt.ylabel('ra')
         plt.gca().invert_yaxis()
 
-        clean_map_p=self.data_clean.sum(axis=0)
+        clean_map_p=self.data_clean.mean(axis=0)
         mean_=clean_map_p.mean()
         std_=clean_map_p.std()
         plt.subplot(1,3,3)

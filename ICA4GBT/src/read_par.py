@@ -19,7 +19,7 @@ def readPar(path):
         else:
             i[1]=float(i[1])
         par[i[0]]=i[1]
-    print '='*80
-    print 'Read par ...'
-    print par
+#   print '='*80
+#   print 'Read par ...'
+#   print par
     return par
