@@ -7,12 +7,14 @@ class IM():
         par=readPar(parFile)
         self.Path1=par['Path1']
         self.Path2=par['Path2']
+        self.PathWig=par['PathWig']
         self.Nx=par['Nx']
         self.Ny=par['Ny']
         self.Nz=par['Nz']
         self.h =par['h']
         self.Om0=par['Om0']
         self.bins=par['bins']
+        self.bins2d=par['bins2d']
         self.ICn=par['ICn']
         self.PCn=par['PCn']
 #       print 'Nx=%d\t\t'%self.Nx,'Ny=%d\t\t'%self.Ny,'Nz=%d\t\t'%self.Nz

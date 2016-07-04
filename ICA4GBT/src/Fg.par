@@ -4,6 +4,7 @@
 #data Path
 Path1=/home/ycli/data/gbt/gbt_15hr_41-80_pointcorr/secA_15hr_41-80_pointcorr_clean_map_I_800.npy
 Path2=/home/ycli/data/gbt/gbt_15hr_41-80_pointcorr/secA_15hr_41-80_pointcorr_clean_map_I_800.npy
+PathWig=/home/ycli/data/wigglez/gbt_15hr_41-80_pointcorr/reg15data.npy
 
 #gridding
 Nx=128
@@ -15,7 +16,9 @@ h=67.77
 Om0=0.307
 
 #1D Pk bins number
-bins=40
+bins=10
+#2D Pk bins number
+bins2d=6
 
 #ICA
 #the number of ICs
